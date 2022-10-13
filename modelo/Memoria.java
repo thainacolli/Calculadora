@@ -6,17 +6,24 @@ import java.util.List;
 public class Memoria {
 	
 	private enum TipoComando {
+
 		ZERAR, SINAL, NUMERO, DIV, MULT, SUB, SOMA, IGUAL, VIRGULA;
+
+
 	};
 	
 	private static final Memoria instancia = new Memoria();
 	
 	private final List<MemoriaObservador> observadores = new ArrayList<>();
 	
+
 	private TipoComando ultimaOperacao = null;
 	private boolean substituir = false;
 	private String textoAtual = "";
 	private String textoBuffer = "";
+
+	private String textoAtual = "";
+
 	
 	private Memoria() {
 		
@@ -39,6 +46,7 @@ public class Memoria {
 		
 		TipoComando tipoComando = detectarTipoComando(texto);
 		
+
 		if(tipoComando == null) {
 			return;
 		} else if(tipoComando == TipoComando.ZERAR) {
@@ -59,10 +67,17 @@ public class Memoria {
 			textoAtual = obterResultadoOperacao();
 			textoBuffer = textoAtual;
 			ultimaOperacao = tipoComando;
+
+		if("AC".equalsIgnoreCase(texto)) {
+			textoAtual = "";
+		} else {
+			textoAtual += texto;
+
 		}
 		
 		observadores.forEach(o -> o.valorAlterado(getTextoAtual()));
 	}
+
 
 	private String obterResultadoOperacao() {
 		if(ultimaOperacao == null 
@@ -120,6 +135,13 @@ public class Memoria {
 				return TipoComando.VIRGULA;
 			}
 		}
+		
+		return null;
+	}
+
+
+
+	private TipoComando detectarTipoComando(String texto) {
 		
 		return null;
 	}
